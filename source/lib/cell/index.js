@@ -228,15 +228,17 @@ function mergeCells(cellBlock) {
         let rangeCells = excelRefs;
 
         let okToMerge = true;
-        cellBlock.ws.mergedCells.forEach((cr) => {
-            // Check to see if currently merged cells contain cells in new merge request
-            let curCells = utils.getAllCellsInExcelRange(cr);
-            let intersection = utils.arrayIntersectSafe(rangeCells, curCells);
-            if (intersection.length > 0) {
-                okToMerge = false;
-                cellBlock.ws.wb.logger.error(`Invalid Range for: ${cellRange}. Some cells in this range are already included in another merged cell range: ${cr}.`);
-            }
-        });
+        // disable the following expensive operation
+        // careful: there is no checking of merge ranges
+        // cellBlock.ws.mergedCells.forEach((cr) => {
+        //     // Check to see if currently merged cells contain cells in new merge request
+        //     let curCells = utils.getAllCellsInExcelRange(cr);
+        //     let intersection = utils.arrayIntersectSafe(rangeCells, curCells);
+        //     if (intersection.length > 0) {
+        //         okToMerge = false;
+        //         cellBlock.ws.wb.logger.error(`Invalid Range for: ${cellRange}. Some cells in this range are already included in another merged cell range: ${cr}.`);
+        //     }
+        // });
         if (okToMerge) {
             cellBlock.ws.mergedCells.push(cellRange);
         }
